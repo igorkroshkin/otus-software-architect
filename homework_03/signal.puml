@@ -1,0 +1,36 @@
+@startuml
+actor User as "Пользователь"
+participant "Датчик движения/замок" as Sensor
+participant "Умный дом" as SmartHome
+participant "Сигнализация" as Alarm
+participant "ЧОП API" as SecurityAPI
+participant "Оператор ЧОП" as Operator
+participant "Группа быстрого реагирования" as ResponseTeam
+
+User -> SmartHome: Постановка дома на сигнализацию
+activate SmartHome
+SmartHome -> Alarm: Активировать сигнализацию
+deactivate SmartHome
+activate Alarm
+
+== Проникновение в дом ==
+Sensor -> SmartHome: Сигнал о движении/открытии замка
+activate SmartHome
+SmartHome -> Alarm: Запуск звуковой сигнализации
+activate Alarm
+SmartHome -> SecurityAPI: Отправить сигнал тревоги
+deactivate SmartHome
+
+activate SecurityAPI
+SecurityAPI -> Operator: Уведомление о тревоге
+deactivate SecurityAPI
+
+activate Operator
+Operator -> ResponseTeam: Отправить группу быстрого реагирования
+deactivate Operator
+
+activate ResponseTeam
+ResponseTeam -> ResponseTeam: Выезд на место происшествия
+deactivate ResponseTeam
+
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+actor User as "Пользователь"
+participant "Датчик движения" as Sensor
+participant "Умный дом" as SmartHome
+participant "Модуль времени" as TimeModule
+participant "Светильник" as Light
+
+User -> Sensor: Пользователь проходит мимо датчика движения
+activate Sensor
+Sensor -> SmartHome: Отправить сигнал о движении
+deactivate Sensor
+
+activate SmartHome
+SmartHome -> TimeModule: Запрос текущего времени
+TimeModule --> SmartHome: Возврат текущего времени суток
+
+alt День
+    SmartHome -> Light: Включить свет (яркость: 70%, цвет: холодный)
+else Вечер
+    SmartHome -> Light: Включить свет (яркость: 50%, цвет: теплый)
+else Ночь
+    SmartHome -> Light: Включить свет (яркость: 30%, цвет: очень теплый)
+end
+activate Light
+deactivate SmartHome
+
+alt Нет движения в течение заданного времени
+    SmartHome -> Light: Выключить освещение
+    deactivate Light
+end
+
+@enduml

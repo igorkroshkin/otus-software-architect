@@ -1,0 +1,33 @@
+@startuml
+actor User as "Пользователь"
+participant "Умный дом" as SmartHome
+participant "Яндекс Погода API" as WeatherAPI
+participant "Термостат" as Thermostat
+participant "Кондиционер" as AC
+participant "Увлажнитель воздуха" as Humidifier
+
+User -> SmartHome: Запустить управление климатом
+activate SmartHome
+SmartHome -> WeatherAPI: Запрос текущей погоды
+WeatherAPI --> SmartHome: Текущая погода (температура, влажность, осадки)
+deactivate WeatherAPI
+
+SmartHome -> SmartHome: Анализ параметров погоды
+
+alt Температура ниже заданной
+    SmartHome -> Thermostat: Включить обогрев до заданной температуры
+else Температура выше заданной
+    SmartHome -> AC: Включить охлаждение до заданной температуры
+else Температура в норме
+    SmartHome -> Thermostat: Отключить обогрев
+    SmartHome -> AC: Отключить охлаждение
+end
+
+alt Влажность ниже нормы
+    SmartHome -> Humidifier: Включить увлажнение
+else Влажность в норме
+    SmartHome -> Humidifier: Отключить увлажнение
+end
+
+deactivate SmartHome
+@enduml
