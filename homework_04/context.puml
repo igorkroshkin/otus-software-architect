@@ -1,0 +1,40 @@
+@startuml
+
+!define RECTANGLE_COLOR #dae8fc
+!define DATABASE_COLOR #f8cecc
+!define MESSAGE_COLOR #fff2cc
+!define CONFIG_COLOR #d9d2e9
+!define ROLE_COLOR #ffe6cc
+!define EXTERNAL_COLOR #d5e8d4
+
+' External Systems
+rectangle "Voice Assistants" as VA #EXTERNAL_COLOR
+rectangle "Weather Forecast Services" as WFS #EXTERNAL_COLOR
+
+' User Roles
+rectangle "User" as User #ROLE_COLOR
+rectangle "Sales Manager" as SalesManager #ROLE_COLOR
+rectangle "Support Engineer" as SupportEngineer #ROLE_COLOR
+
+' Main System
+rectangle "Smart Home Management System" as SHMS #RECTANGLE_COLOR
+
+' Internal Components
+cloud "Device Telemetry DB" as TelemetryDB #DATABASE_COLOR
+cloud "System Data DB" as SystemDB #DATABASE_COLOR
+queue "Message Broker" as MessageBroker #MESSAGE_COLOR
+rectangle "Configuration Service" as ConfigService #CONFIG_COLOR
+
+' Relationships
+VA --> SHMS : "Integrates with"
+WFS --> SHMS : "Provides weather data"
+User --> SHMS : "Uses"
+SalesManager --> SHMS : "Manages devices"
+SupportEngineer --> SHMS : "Provides support"
+
+SHMS --> TelemetryDB : "Stores telemetry data"
+SHMS --> SystemDB : "Stores system data"
+SHMS --> MessageBroker : "Communicates via"
+SHMS --> ConfigService : "Manages configurations"
+
+@enduml
